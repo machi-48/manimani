@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /*
+   * テーマ色（オレンジ）。用途で2系統に分けてある。
+   *
+   * --accent 系 … 地の上に置く文字・リンク・フォーカスリング。
+   *   背景に対して読める必要があるので、ライトとダークで値が違う。
+   *
+   * --accent-solid 系 … 塗りボタンの面と、その上の文字。
+   *   面の上の文字は両モードとも白に統一したいので、面の色はモードによらず
+   *   白が 4.5:1 を満たす濃さに固定する（明るいオレンジに白文字だと 2.8:1 で読めない）。
+   *   WCAG 実測: #c2410c 対 白 = 5.18:1 / #a83c0c 対 白 = 6.33:1。
+   *   面そのものは背景に対して ライト 5.18:1 / ダーク 3.82:1 で、どちらも 3:1 以上。
+   */
+  --accent: #c2410c;
+  /* ホバーや選択中の淡い地。color-mix は使わない
+     ―― 非対応ブラウザ向けのフォールバックが不透明色になり、
+     文字がベタ塗りに沈んでしまうため。 */
+  --accent-wash: rgb(194 65 12 / 0.12);
+  --accent-solid: #c2410c;
+  --accent-solid-hover: #a83c0c;
+  --accent-on-solid: #ffffff;
+
+  /*
+   * カテゴリの色。8枠を固定順で持つ。
+   * ライト・ダークとも背景色（#ffffff / #0a0a0a）に対して検証済み:
+   * 明度帯・彩度下限・色覚多様性での隣接分離・通常視での分離を全て通過。
+   * ライトでは青緑・黄・ピンクがコントラスト3:1未満なので、
+   * これらの色を使う箇所には必ずカテゴリ名のラベルを併記すること（色だけで識別させない）。
+   */
+  --cat-blue: #2a78d6;
+  --cat-orange: #eb6834;
+  --cat-aqua: #1baf7a;
+  --cat-yellow: #eda100;
+  --cat-magenta: #e87ba4;
+  --cat-green: #008300;
+  --cat-violet: #4a3aa7;
+  --cat-red: #e34948;
+
+  /* 予算オーバーの状態色。状態を表す色は固定で、モードで変えない。
+     色だけで伝えず、必ず「オーバー」の文言を添えること。 */
+  --status-critical: #d03b3b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+
+    /* 文字・リンクとして使う側だけ、暗背景で読める明るさに切り替える。
+       実測: #f97316 対 #0a0a0a = 7.06:1。
+       塗りボタンの --accent-solid 系はモード共通なので、ここでは上書きしない。 */
+    --accent: #f97316;
+    --accent-wash: rgb(249 115 22 / 0.16);
+
+    /* 同じ8色をダーク背景向けに選び直した値。明度を機械的に反転したものではない。 */
+    --cat-blue: #3987e5;
+    --cat-orange: #d95926;
+    --cat-aqua: #199e70;
+    --cat-yellow: #c98500;
+    --cat-magenta: #d55181;
+    --cat-green: #008300;
+    --cat-violet: #9085e9;
+    --cat-red: #e66767;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  /* Geist は日本語字形を持たないので、OS 標準の日本語フォントにフォールバックさせる */
+  font-family: var(--font-geist-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic",
+    Meiryo, sans-serif;
+}
