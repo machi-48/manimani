@@ -70,6 +70,28 @@ GitHub に push して Vercel にインポートし、環境変数を4つ設定�
 ローカルの記録を移したい場合、件数が少なければ画面から入れ直すのが早い。
 まとまった量があるなら `turso db shell manimani < dump.sql` で流し込む。
 
+### 4. 自動デプロイ
+
+Vercel プロジェクトは `machi-48/manimani` に接続済み。
+
+- `main` に push → **本番**へ自動デプロイ
+- 他のブランチ・PR に push → **プレビュー**URLへ自動デプロイ
+
+`vercel.json` でビルドコマンドを `npm test && npm run build` にしてあるので、
+**テストが1つでも落ちるとデプロイされず、本番は直前の状態のまま残る。**
+
+手動で出したいときは `npx vercel --prod`。ただしこれは git ではなく
+手元のフォルダをそのまま送るので、未コミットの変更も本番に出る点に注意。
+
+**スキーマを変えたときは、push する前に Turso へマイグレーションを流すこと。**
+Vercel は自動では流さないので、順番を逆にすると新しいコードが存在しない列を読んで本番が落ちる。
+
+```bash
+export TURSO_DATABASE_URL='libsql://...' TURSO_AUTH_TOKEN='...'
+npm run db:migrate
+git push
+```
+
 ## Scripts
 
 | command | description |
