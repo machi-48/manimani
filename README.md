@@ -76,10 +76,24 @@ GitHub に push して Vercel にインポートし、環境変数を4つ設定�
 | `npm run build` | production build |
 | `npm run start` | serve the production build |
 | `npm run lint` | run ESLint |
+| `npm test` | テストを一度実行 |
+| `npm run test:watch` | テストを監視実行 |
 | `npm run db:generate` | スキーマ変更からマイグレーション SQL を生成 |
 | `npm run db:migrate` | 未適用のマイグレーションを DB に適用 |
 | `npm run db:seed` | 初期カテゴリを投入（再実行しても重複しない） |
 | `npm run db:studio` | Drizzle Studio で DB を GUI から確認 |
+
+## テスト
+
+Vitest。`tests/` 以下にある。
+
+DB を触るテストは**モックせず、一時ファイルの SQLite に本物のマイグレーションを流して**検証する
+（`tests/setup.ts` が `TURSO_DATABASE_URL` を使い捨ての一時ファイルに差し替える）。
+集計は SQL そのものが実装の本体なので、モックすると何も検証できないため。
+本物の `manimani.db` には触らない。
+
+Server Action のテストでは `next/cache` の `revalidatePath` だけ差し替える。
+リクエストの文脈が無いと動かないためで、検証対象は入力の受け付け方と DB に入る内容。
 
 ## データ層のメモ
 
