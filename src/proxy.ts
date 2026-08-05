@@ -31,6 +31,8 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // 静的ファイルと画像最適化は対象外
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // 静的ファイルは対象外。
+  // アイコンとマニフェストを塞ぐと、ログイン前の画面でアイコンが出ず
+  // ホーム画面への追加も正しく動かないため、拡張子で除外している。
+  matcher: ["/((?!_next/static|_next/image|.*\\.(?:png|ico|svg|webmanifest)$).*)"],
 };

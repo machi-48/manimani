@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -14,7 +14,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "manimani",
-  description: "家計簿",
+  description: "生活費の家計簿",
+  // ホーム画面から開いたときにアプリとして扱わせる
+  appleWebApp: {
+    capable: true,
+    title: "manimani",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport: Viewport = {
+  // ブラウザの上下の色を本文の背景に合わせて、継ぎ目が見えないようにする
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

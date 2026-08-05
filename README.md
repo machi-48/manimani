@@ -95,6 +95,17 @@ DB を触るテストは**モックせず、一時ファイルの SQLite に本�
 Server Action のテストでは `next/cache` の `revalidatePath` だけ差し替える。
 リクエストの文脈が無いと動かないためで、検証対象は入力の受け付け方と DB に入る内容。
 
+## スマホ（PWA）
+
+`src/app/manifest.ts` と `layout.tsx` の `viewport` / `appleWebApp` で、ホーム画面に追加すると
+ブラウザUIなしのアプリとして開くようにしてある。アイコンは sharp で生成した PNG
+（`public/icon-*.png`、`src/app/icon.png`、`src/app/apple-icon.png`）。
+¥ はフォントではなくベクターの線で描いているので、生成環境のフォントに左右されない。
+
+**`src/proxy.ts` の matcher は `.png` `.ico` `.svg` `.webmanifest` を認証の対象外にしている。**
+これらを塞ぐとログイン前の画面でアイコンが取れず、ホーム画面への追加が正しく動かないため。
+ここに秘密は含まれないので公開して問題ない。
+
 ## データ層のメモ
 
 - 接続は libSQL 経由。`TURSO_DATABASE_URL` が未設定ならローカルの `file:manimani.db`（gitignore 済み）を使う。同じドライバのままローカルと Turso を切り替えられるので、SQL の方言差を気にしなくていい。
