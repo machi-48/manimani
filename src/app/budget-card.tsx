@@ -122,8 +122,12 @@ export function BudgetCard({
                 className="inline-block h-3 w-0.5 shrink-0"
                 style={{ backgroundImage: DOTTED_LINE }}
               />
+              {/*
+                「5/31日」と書くと日付（5月31日）に読めてしまう。
+                明細欄では同じ形が実際に日付を指しているので、必ず日付と読めない形にする。
+              */}
               <span className="tabular-nums">
-                今日までの目安 {formatYen(paceYen)}（{elapsedDays}/{daysInMonth}日）
+                今日までの目安 {formatYen(paceYen)}（{daysInMonth}日中{elapsedDays}日目）
               </span>
               {diffYen !== null && diffYen !== 0 ? (
                 <span className="tabular-nums">
